@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "763477419860",
+    "project_id": "test2-ff346",
+    "storage_bucket": "test2-ff346.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:763477419860:android:864291d043e6fe3bd78ac1",
+        "android_client_info": {
+          "package_name": "com.example.etoemessenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "763477419860-s2h9q39vd5lll6ap88i3p4dp5phvebvi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8SeuLC-PsA0mgWbxUtADzMulOJVJ2cvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "763477419860-s2h9q39vd5lll6ap88i3p4dp5phvebvi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
