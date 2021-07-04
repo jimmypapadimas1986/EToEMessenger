@@ -87,6 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                             hashMap.put("id", userId);
                             hashMap.put("username", username);
                             hashMap.put("ImageURL", "default");
+                            hashMap.put("status", "offline");
                             //hashMap.put("password", password);
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {      //το οποίο "γράφουμε στη βάση δεδομένων"
                                 @Override

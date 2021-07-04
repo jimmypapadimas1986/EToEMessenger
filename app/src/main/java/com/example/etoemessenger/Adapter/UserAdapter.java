@@ -28,10 +28,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> { 
     καθώς και σε αναβαθμίσεις για λειτουργίες σε επίπεδο εφαρμογής, όπως εκκίνηση των Activitiew, μετάδοση και λήψη των intent*/
     private Context myContext;
     private List<User> myUsers;     //Λίστα χρηστών
+    private boolean online;
 
-    public UserAdapter(Context myContext, List<User> myUsers){  //μεθοδος δημιουργός
+    public UserAdapter(Context myContext, List<User> myUsers, boolean online){  //μεθοδος δημιουργός
         this.myUsers = myUsers;
         this.myContext = myContext;
+        this.online = online;
     }
 
 
@@ -70,6 +72,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> { 
             Glide.with(myContext).load(user.getImageUrl()).into(holder.profile_Image);
         }
 
+        if(online){
+            if(user.getStatus().equals("online")) {
+                holder.status_indicator_on.setVisibility(View.VISIBLE);
+                holder.status_indicator_off.setVisibility(View.GONE);
+            }
+            else {
+                holder.status_indicator_off.setVisibility(View.VISIBLE);
+                holder.status_indicator_on.setVisibility(View.GONE);
+            }
+        }
+        else{
+            holder.status_indicator_off.setVisibility(View.GONE);
+            holder.status_indicator_on.setVisibility(View.GONE);
+        }
+
         //19-5-2021
         holder.itemView.setOnClickListener(new View.OnClickListener() {         //πατάμε σε εναν χρήστη-item της λίστας χρηστών
             @Override
@@ -91,12 +108,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> { 
 
         public TextView username;
         public ImageView profile_Image;
+        private ImageView status_indicator_on;
+        private ImageView status_indicator_off;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             username = itemView.findViewById(R.id.username);
             profile_Image = itemView.findViewById(R.id.profile_image);
+            status_indicator_on = itemView.findViewById(R.id.status_ind_on);
+            status_indicator_off = itemView.findViewById(R.id.status_ind_off);
         }
     }
 }

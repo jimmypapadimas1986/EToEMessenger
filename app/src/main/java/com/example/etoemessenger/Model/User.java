@@ -5,11 +5,13 @@ public class User {     //κλάση χρήστη
     private String id;
     private String username;
     private String ImageURL;
+    private String status;          //4-7-2021: κατασταση χρήστη (online/offline)
 
-    public User(String id, String username, String imageUrl) {
+    public User(String id, String username, String imageUrl, String status) {
         this.id = id;
         this.username = username;
         this.ImageURL = imageUrl;
+        this.status = status;
     }
 
     public User() {
@@ -38,5 +40,13 @@ public class User {     //κλάση χρήστη
 
     public void setImageUrl(String imageUrl) {
         this.ImageURL = imageUrl;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

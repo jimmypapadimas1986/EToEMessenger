@@ -72,7 +72,7 @@ public class UsersFragment extends Fragment {
                     }
                 }
 
-                userAdapter = new UserAdapter(getContext(), mUsers);        //προσαρμόζουμε την λίστα χρηστών
+                userAdapter = new UserAdapter(getContext(), mUsers, false);        //προσαρμόζουμε την λίστα χρηστών
                 recyclerView.setAdapter(userAdapter);                       //στο πεδίο recyclerView της παρούσας κλάσσης
             }
 
