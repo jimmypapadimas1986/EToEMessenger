@@ -170,13 +170,13 @@ public class MainActivity extends AppCompatActivity {
     //4-7-2021
     //με τις επόμενες μεθόδου αλλάζουμε την κατάσταση του τοπικού χρήστη
     @Override
-    protected void onResume() {     //οταν κάνουμε resume
+    protected void onResume() {     //οταν κάνουμε resume θέτουμε το status online
         super.onResume();
         status("online");
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause() {     //όταν βγένουμε από την εφαρμογή θετουμε το status offline
         super.onPause();
         status("offline");
     }
