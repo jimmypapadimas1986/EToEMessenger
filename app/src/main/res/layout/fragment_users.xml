@@ -5,7 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.UsersFragment">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:hint="Search...(Case sensitive)"
+        android:id="@+id/search_user_by_name"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/search_user_by_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/reycler_view"/>
