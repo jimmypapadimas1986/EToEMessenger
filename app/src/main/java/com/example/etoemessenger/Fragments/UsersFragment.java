@@ -31,7 +31,7 @@ import java.util.List;
 
 //fragment χρηστών
 //19-5-2021
-//12-7-2021 αναζήτηση απομακρυσμένων χρηστών της υπηρεσίας (case insensitive??)
+//12-7-2021 αναζήτηση απομακρυσμένων χρηστών της υπηρεσίας (case insensitive??  )
 public class UsersFragment extends Fragment {
 
     private RecyclerView recyclerView;  //δυναμική λίστα
