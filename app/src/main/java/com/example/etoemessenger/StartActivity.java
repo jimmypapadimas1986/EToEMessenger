@@ -11,6 +11,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
+/*Μάθημα    : Ανάπτυξη και Σχεδίαση λογισμικού
+* Εξάμηνο   : Εαρινό 2021
+* Εισηγητής : Γεώργιος Δημητρίου
+* Σπουδαστές: Γεώργιος Σκάρλας, Α.Μ. 00852 / Δημήτριος Παπαδήμας, Α.Μ. 00829
+**Θέμα      : ΕΦΑΡΜΟΓΗ MESSAGING ΓΙΑ ΤΟ ΛΕΙΤΟΥΡΓΙΚΟ ΣΥΣΤΗΜΑ ANDROID ME
+              ΧΡΗΣΗ ΤΗΣ ΠΛΑΤΦΟΡΜΑΣ FIREBASE*/
+
+
 //η αρχικη "σελίδα" της εφαρμογής
 public class StartActivity extends AppCompatActivity {
 
