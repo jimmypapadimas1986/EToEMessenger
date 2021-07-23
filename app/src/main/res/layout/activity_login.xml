@@ -52,6 +52,14 @@
             android:backgroundTint="@color/colorAEKYellow"
             android:textColor="@color/colorAEKBlack"
             android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset your password"
+            android:gravity="center"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorAEKBlack"
+            android:id="@+id/password_reset"/>
 
 
 

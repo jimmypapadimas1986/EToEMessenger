@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,8 +122,23 @@ public class UsersFragment extends Fragment {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren() ){   //γεμίζουμε την 'κενή' λίστα με τα 'παιδιά' του snapshot
                     User user = dataSnapshot.getValue(User.class);
 
+                    /*if(user == null && firebaseUser == null){
+                        Log.i("Debuggar", "Both local and remote users are null");
+                    }
+                    else if(user != null && firebaseUser == null){
+                        Log.i("Debuggar", "remote user is "+user.getId().toString()+" while local user is null");
+                    }
+                    else if(user == null && firebaseUser != null){
+                        Log.i("Debuggar", "Local user is "+firebaseUser.getUid().toString()+" while remote is null");
+                    }
+                    else{
+                        Log.i("Debuggar", "Local user is "+firebaseUser.getUid().toString()+" and ");
+                        Log.i("Debuggar", "remote user is "+ user.getId().toString());
+                    }*/
+
                     assert user != null;
                     assert firebaseUser != null;
+
                     if(!user.getId().equals(firebaseUser.getUid())){        //από την λίστα εξερούμε τον τρέχοντα χρήστη
                        mUsers.add(user);
                     }

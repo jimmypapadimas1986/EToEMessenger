@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btn_login;
 
     FirebaseAuth auth;
+    TextView password_reset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,18 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.email);           //συνδέουμε το interface με τον κώδικά μας
         password = findViewById(R.id.password);
         btn_login = findViewById(R.id.btn_login);
+        password_reset = findViewById(R.id.password_reset);
+
+
+        /*πατώντας στο "reset your password" μεταφερόμαστε στο Activity PasswordResetActivity που
+        * αλλαζουμε κωδικό*/
+        password_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, PasswordResetActivity.class));
+            }
+        });
+
 
         /*Ακολουθεί η μέθοδος setOnClickListener() με την οποία κάνουμε το login στην υπηρεσία */
         btn_login.setOnClickListener(new View.OnClickListener() {

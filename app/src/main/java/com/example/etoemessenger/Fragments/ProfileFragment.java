@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
 
                 //Log.i("Diagnostic", "Attempted access to user "+user.getUsername()+" with id "+user.getId()+"and image "+user.getImageUrl());
 
-                if (user.getImageUrl()==null){      //εδω θα σκάσει
+                if (user.getImageUrl().toString().equals("default")){      //εδω θα σκάσει
                     image_profile.setImageResource(R.mipmap.ic_launcher);
                     //Log.i("Diagnostic", "δεν βρήκε εικόνα");
                 }
