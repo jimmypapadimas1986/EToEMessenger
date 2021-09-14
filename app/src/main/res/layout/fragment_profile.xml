@@ -8,7 +8,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/cardView">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,8 +44,30 @@
                 android:textSize="18dp"
                 android:layout_marginBottom="20dp"/>
 
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <CheckBox
+        android:id="@+id/isSecure"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:textSize="18dp"
+        android:layout_below="@id/cardView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Enable secure messaging" />
+
+    <Button
+        android:id="@+id/update_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/isSecure"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/colorAEKYellow"
+        android:text="Update information"
+        android:textColor="@color/colorAEKBlack"/>
 
 </RelativeLayout>

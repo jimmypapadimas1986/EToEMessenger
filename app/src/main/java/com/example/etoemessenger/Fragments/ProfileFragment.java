@@ -3,7 +3,9 @@ package com.example.etoemessenger.Fragments;
 import android.app.ProgressDialog;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,12 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import de.hdodenhof.circleimageview.CircleImageView;
-
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,9 +43,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Base64;
 import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 //1-6-2021
 //Το τρέχον fragment προβάλλει το προφίλ του τοπικού χρήστη
@@ -51,14 +63,17 @@ public class ProfileFragment extends Fragment {
 
     CircleImageView image_profile;      //UI στοιχείο εικόνας προφιλ
     TextView username;                  //UI στοιχείο όνομα χρήστη
+    CheckBox isSecure;
+    Button update_btn;
 
-    DatabaseReference reference;
+    DatabaseReference reference, pukReference;
     FirebaseUser fuser;                 //τρέχων τοπικός χρήστης
 
     StorageReference storageReference;
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri; //αναγνωριστικό εικόνας χρήστη
     private StorageTask uploadTask;
+    String mypublicKey;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +83,9 @@ public class ProfileFragment extends Fragment {
 
         image_profile = view.findViewById(R.id.profile_image);
         username = view.findViewById(R.id.username);
+        isSecure = (CheckBox) view.findViewById(R.id.isSecure);
+        update_btn = view.findViewById(R.id.update_btn);
+
 
         storageReference = FirebaseStorage.getInstance().getReference("Uploads");
         //συνδεόμαστε στον αποθηκευτικό χώρο FirebaseStorage του project μας
@@ -75,6 +93,24 @@ public class ProfileFragment extends Fragment {
         //...αυθεντικοποιούμαστε και συνδεόμαστε στη βάση μας
         fuser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+        pukReference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid()).child("publicKey");
+        pukReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mypublicKey = snapshot.getValue(String.class);
+                if(mypublicKey.equals("none")){
+                    isSecure.setChecked(false);
+                }
+                else{
+                    isSecure.setChecked(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         //Log.i("Diagnostic", "logged in user is "+fuser.getDisplayName()+" with id "+fuser.getUid());
 
@@ -116,7 +152,73 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        //boolean isSecureChecked;
+
+        update_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(fuser.getUid(), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                HashMap<String, Object> hashMap = new HashMap<>();
+
+                if(isSecure.isChecked()){
+                    Log.i("Info", "Checkbox checked!");
+                    isSecure.setChecked(true);
+                    KeyPairGenerator keyGen = null;
+                    try {
+                        keyGen = KeyPairGenerator.getInstance("DH", "BC");
+                        // Δημιουργεία ζεύγους δημοσίου - ιδιωτικού κλειδιού για την ανταλαγή κλειδιου Diffie-Hellman
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchProviderException e) {
+                        e.printStackTrace();
+                    }
+                    keyGen.initialize(256);
+
+
+
+                    KeyPair keyPair = keyGen.generateKeyPair();
+
+                    Base64.Encoder encoder = Base64.getEncoder();
+                    PublicKey publicKey = keyPair.getPublic();
+                    String publicKeyString = encoder.encodeToString(publicKey.getEncoded());
+                    editor.putString("myPuKey", publicKeyString);
+                    PrivateKey privateKey = keyPair.getPrivate();
+                    String privateKeyString = encoder.encodeToString(privateKey.getEncoded());
+                    editor.putString("myPrKey", privateKeyString);
+                    //hashMap.put("publicKey", publicKeyString);
+                    //fuser = FirebaseAuth.getInstance().getCurrentUser();
+                    //pukReference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+                    //reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+
+
+                    hashMap.put("publicKey", publicKeyString);
+
+                    reference.updateChildren(hashMap);
+                    //εδω θα βάλω το public key μου, ενω παράλληλα θα αποθηκεύσω το private key μου στη συσκευή
+                    editor.commit();
+
+                }
+                else{
+                    //isSecureChecked = false;
+                    isSecure.setChecked(false);
+                    hashMap.put("publicKey", "none");
+                    reference.updateChildren(hashMap);
+                    editor.remove("myPuKey");
+                    editor.remove("myPrKey");
+                    editor.commit();
+                }
+            }
+        });
+
+
+
+
+
         return view;
+
+
     }
 
     //συνάρτηση που ανοίγει τον "Explorer" του λειτουργικού Android για την επιλογή πόρου όπως έχει

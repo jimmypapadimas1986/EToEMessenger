@@ -49,6 +49,13 @@
             android:layout_marginTop="10dp"
             android:hint="Password"/>
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:id="@+id/isSecure"
+            android:text="Enable secure messaging"
+            android:layout_marginTop="10dp"/>
+
         <Button
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
