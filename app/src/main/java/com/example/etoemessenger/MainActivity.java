@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 //    Log.i("INFO", "user is null");
                 //}
                 username.setText(user.getUsername());
-                if (user.getImageUrl()==null) {
+                if (user.getImageUrl().equals("default")) {
                     profile_image.setImageResource(R.mipmap.ic_launcher);
                 } else {
                     Glide.with(MainActivity.this).load(user.getImageUrl()).into(profile_image);
