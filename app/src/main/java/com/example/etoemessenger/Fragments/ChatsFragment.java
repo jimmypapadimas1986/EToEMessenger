@@ -25,7 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 //1-6-2021
 //fragment που περιέχει τις συνομιλίες που έχω κάνει ανα χρήστη
@@ -33,12 +36,12 @@ public class ChatsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
-    private List<User> mUsers;
+    private CopyOnWriteArrayList<User> mUsers;
 
     FirebaseUser fuser;     //τοπικός χρήστης
     DatabaseReference reference;    //Firebase βάση δεδομένων
 
-    private  List<String> ContactsList;    //λίστα απομακρισμένων χρηστών με τους οποίου έχω επικοινωνία
+    private  CopyOnWriteArrayList<String> ContactsList;    //λίστα απομακρισμένων χρηστών με τους οποίου έχω επικοινωνία
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class ChatsFragment extends Fragment {
         //Authentication
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
-        ContactsList = new ArrayList<>();
+        ContactsList = new CopyOnWriteArrayList<>();
 
         //Παίρνουμε  ένα snapshot της βάσης "Chats", από το οποίο τραβάμε τα μηνύματα που μας αφορούν
         //και συμπληρώνουμε την String λίστα  usersList των επαφών μας
@@ -60,12 +63,15 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ContactsList.clear();
+                ListIterator<String> contactListIterator = ContactsList.listIterator();
 
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Chat chat = dataSnapshot.getValue(Chat.class);
+                    contactListIterator.hasNext();
 
-                        //Log.i("Info", "logged in user is "+fuser.getUid());
-                        //Log.i("Info", "chat object is "+chat.getReceiver()+ " "+chat.getSender()+" "+chat.getMessage());
+
+                    //Log.i("Info", "logged in user is "+fuser.getUid());
+                    //Log.i("Info", "chat object is "+chat.getReceiver()+ " "+chat.getSender()+" "+chat.getMessage());
 
 
                     if (chat.getSender().equals(fuser.getUid())){       //μηνύματα που έχω στείλει
@@ -90,7 +96,7 @@ public class ChatsFragment extends Fragment {
     }
 
     private void readChats(){
-        mUsers = new ArrayList<>();     //προσωρινή LOCAL  User λιστα επαφών που προορίζεται για την
+        mUsers = new CopyOnWriteArrayList<>();     //προσωρινή LOCAL  User λιστα επαφών που προορίζεται για την
         //δυναμική προβολή recyclerView
 
         //Παίρνουμε  ένα snapshot της βάσης "Users"
@@ -106,11 +112,11 @@ public class ChatsFragment extends Fragment {
                     User user = dataSnapshot.getValue(User.class);
 
                     //προσθέτουμε ένα User αντικείμενο στην λιστα mUsers
-                    for(String id : ContactsList){      //οποιοδήποτε στοιχείο της String λίστας επαφών "ταιριάζει"
-                        if (user.getId().equals(id)){   //με το id οποιουδήποτε χρήστη της User λίστας όλων των χρηστών
+                    for(ListIterator<String> id = ContactsList.listIterator(); id.hasNext();){      //οποιοδήποτε στοιχείο της String λίστας επαφών "ταιριάζει"
+                        if (user.getId().equals(id.next() )){   //με το id οποιουδήποτε χρήστη της User λίστας όλων των χρηστών
                             if (mUsers.size() != 0){    //και η User λίστα δεν είναι κενή
-                                for (User userl : mUsers){
-                                    if(!user.getId().equals(userl.getId())){ //και δεν βρίσκεται ήδη στην mUsers λίστα επαφών
+                                for (ListIterator<User> userl = mUsers.listIterator(); userl.hasNext();){
+                                    if(!user.getId().equals(userl.next().getId())){ //και δεν βρίσκεται ήδη στην mUsers λίστα επαφών
                                         mUsers.add(user);
                                     }
                                 }
