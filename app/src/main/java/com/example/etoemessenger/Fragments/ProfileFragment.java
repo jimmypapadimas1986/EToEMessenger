@@ -43,6 +43,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import org.apache.commons.codec.binary.Hex;
+
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -180,12 +182,14 @@ public class ProfileFragment extends Fragment {
 
                     KeyPair keyPair = keyGen.generateKeyPair();
 
-                    Base64.Encoder encoder = Base64.getEncoder();
+                    //Base64.Encoder encoder = Base64.getEncoder();
                     PublicKey publicKey = keyPair.getPublic();
-                    String publicKeyString = encoder.encodeToString(publicKey.getEncoded());
+                    char[] publicKeyChars = Hex.encodeHex(publicKey.getEncoded());
+                    String publicKeyString =String.valueOf(publicKeyChars);
                     editor.putString("myPuKey", publicKeyString);
                     PrivateKey privateKey = keyPair.getPrivate();
-                    String privateKeyString = encoder.encodeToString(privateKey.getEncoded());
+                    char[] privateKeyChars = Hex.encodeHex(privateKey.getEncoded());
+                    String privateKeyString = String.valueOf(privateKeyChars);
                     editor.putString("myPrKey", privateKeyString);
                     //hashMap.put("publicKey", publicKeyString);
                     //fuser = FirebaseAuth.getInstance().getCurrentUser();

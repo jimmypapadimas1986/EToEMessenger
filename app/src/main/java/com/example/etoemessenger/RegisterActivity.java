@@ -127,12 +127,14 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 KeyPair keyPair = keyGen.generateKeyPair();
 
-                                Base64.Encoder encoder = Base64.getEncoder();
+                                //Base64.Encoder encoder = Base64.getEncoder();
                                 PublicKey publicKey = keyPair.getPublic();
-                                String publicKeyString = encoder.encodeToString(publicKey.getEncoded());
+                                char[] publicKeyChars = Hex.encodeHex(publicKey.getEncoded());
+                                String publicKeyString =String.valueOf(publicKeyChars);
                                 editor.putString("myPuKey", publicKeyString);
                                 PrivateKey privateKey = keyPair.getPrivate();
-                                String privateKeyString = encoder.encodeToString(privateKey.getEncoded());
+                                char[] privateKeyChars = Hex.encodeHex(privateKey.getEncoded());
+                                String privateKeyString = String.valueOf(privateKeyChars);
                                 editor.putString("myPrKey", privateKeyString);
                                 hashMap.put("publicKey", publicKeyString);
 
